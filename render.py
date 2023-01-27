@@ -27,32 +27,32 @@ parkings = [
 
 for parking in parkings:
   print(f"Working on {parking}...", end=" ")
-  with open(f"./out/csv/{parking}.CSV", "rt", encoding="utf-8") as fin:
+  with open(f"./out/csv/{parking}.csv", "rt", encoding="utf-8") as fin:
     print("Parsing, please wait...", end="")
     fin = fin.readlines()[1:]
     print("The current size of the file is:", len(fin), "lines.")
     for i in range(0, len(fin)):
-        print(fin[i], fin[i] == ",,,,,,,", fin[i] == ",,,,,,,\n",  fin[i].strip().split(","))
-        if fin[i] != ",,,,,,,":
-            data = fin[i].strip().split(",")
+      if fin[i] != "name,date,date,opened,free_places,places\n":
+        data = fin[i].strip().split(",")
 
-            if len(data) > 1:
-                ### CSV Header: name,date,export_date,opened,free_places,places
-                db = {
-                "name": data[0],
-                "export_date": data[1],
-                "real_date": data[2],
-                "is_opened": bool(data[3]),
-                "availability": int(data[4]),
-                "capacity": int(data[5])
-                }
+        if data[0] != "":
+          if len(data) > 1:
+              ### CSV Header: name,date,export_date,opened,free_places,places
+              db = {
+              "name": data[0],
+              "export_date": data[1],
+              "real_date": data[2],
+              "is_opened": bool(data[3]),
+              "availability": int(data[4]),
+              "capacity": int(data[5])
+              }
 
-                p = influxdb_client.Point(db["name"])
+              p = influxdb_client.Point(db["name"])
 
-                p.field("export_date", db["export_date"])
-                p.field("real_date", db["real_date"])
-                p.field("is_opened", db["is_opened"])
-                p.field("availability", db["availability"])
-                p.field("capacity", db["capacity"])
-                p.time(db["real_date"])
-                write_api.write(bucket=bucket, org=org, record=p)
+              p.field("export_date", db["export_date"])
+              p.field("real_date", db["real_date"])
+              p.field("is_opened", db["is_opened"])
+              p.field("availability", db["availability"])
+              p.field("capacity", db["capacity"])
+              p.time(db["real_date"])
+              write_api.write(bucket=bucket, org=org, record=p)

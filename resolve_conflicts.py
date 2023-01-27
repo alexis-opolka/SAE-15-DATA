@@ -24,7 +24,7 @@ for element in the_path.iterdir(): # Path.iterdir() in order to iterate inside t
 for file in csv_files:
     final_file = []
     filename = file.name.strip().split("\\")[-1];
-    filename = filename.replace(".CSV", "")
+    filename = filename.replace(".csv", "")
     print("Opening", filename)
     with open(file, "rt", encoding="utf-8") as fin:
         fin = fin.readlines()
