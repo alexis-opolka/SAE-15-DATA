@@ -26,7 +26,7 @@ for file in csv_files:
     filename = file.name.strip().split("\\")[-1];
     filename = filename.replace(".csv", "")
     print("Opening", filename)
-    with open(file, "rt", encoding="utf-8") as fin:
+    with open(file, "rt", encoding="utf-8") as fin: ### Fin = File In
         fin = fin.readlines()
         for line in fin:
             line = line.strip().split(',')
@@ -35,6 +35,6 @@ for file in csv_files:
                     line = ["" for i in range(0, 6)]
                 line.insert(2, f"{line[1]}") 
             final_file.append("".join(listToStr(line)))
-    with open(f"out/csv/{filename}.csv", "wt", encoding="utf-8") as fout:
+    with open(f"out/csv/{filename}.csv", "wt", encoding="utf-8") as fout: ### Fout = File Out
         fout.write("".join(final_file) + "\n")
     print(f"{filename} completed")
